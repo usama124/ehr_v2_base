@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 
 from app.models import Doctor, User
-from app.schema import DoctorProfileOut, UserOut, DoctorCreate
+from app.schema import DoctorProfileOut, UserOut, DoctorCreate, AppointmentOut, MedicalRecordOut
 
 
 async def get_doctors_count(db: AsyncSession):
@@ -73,4 +73,8 @@ async def construct_doctor_serialized_response(doctor: Union[Doctor, List[Doctor
         final_response = DoctorProfileOut.from_orm(doctor).dict()
         final_response["user"] = UserOut.from_orm(doctor.user).dict()
         # TODO add appointments, and medical Record
+        final_response["appointments"] = [AppointmentOut.from_orm(appointment).dict() for appointment in
+                                          doctor.appointments]
+        final_response["medical_records"] = [MedicalRecordOut.from_orm(record).dict() for record in
+                                             doctor.medical_records]
     return final_response
