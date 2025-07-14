@@ -15,6 +15,8 @@ class RoleEnum(PyEnum):
 
 
 class PermissionsEnum(PyEnum):
+    CAN_VIEW_STATS = "CAN_VIEW_STATS"
+
     CAN_ADD_USER = "CAN_ADD_USER"
     CAN_VIEW_USER = "CAN_VIEW_USER"
     CAN_EDIT_USER = "CAN_EDIT_USER"
@@ -42,6 +44,8 @@ class PermissionsEnum(PyEnum):
 
 
 AdminPermissions = [
+    PermissionsEnum.CAN_VIEW_STATS,
+
     PermissionsEnum.CAN_ADD_USER,
     PermissionsEnum.CAN_VIEW_USER,
     PermissionsEnum.CAN_EDIT_USER,

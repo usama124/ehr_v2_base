@@ -1,11 +1,17 @@
 from typing import Union, List
 
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 
 from app.models import Doctor, User
 from app.schema import DoctorProfileOut, UserOut, DoctorCreate
+
+
+async def get_doctors_count(db: AsyncSession):
+    count = await db.scalar(select(func.count(Doctor.id)))
+    return count
 
 
 async def list_doctors(db: AsyncSession):

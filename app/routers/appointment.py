@@ -32,7 +32,9 @@ async def get_appointment_by_id(
         db: AsyncSession = Depends(get_db),
         current_user=Depends(require_permission(PermissionsEnum.CAN_VIEW_APPOINTMENT)),
 ):
-    appointments = await appointment_crud.get_appointment_by_id(db=db, _id=appointment_id)
+    appointment = await appointment_crud.get_appointment_by_id(db=db, _id=appointment_id)
+    if not appointment:
+        raise NotFoundException(message="Appointment not found")
     response = await appointment_crud.construct_appointment_serialized_response(appointments)
     return ApiCustomResponse.get_response(status_code=200, message="success", data=response)
 
@@ -61,7 +63,7 @@ async def update_appointment(
         db: AsyncSession = Depends(get_db),
         current_user=Depends(require_permission(PermissionsEnum.CAN_EDIT_APPOINTMENT)),
 ):
-    db_appointment = await appointment_crud.check_appointment_exists(db=db, _id=appointment_id)
+    db_appointment = await appointment_crud.get_appointment_by_id(db=db, _id=appointment_id)
     if not db_appointment:
         raise NotFoundException(message="Appointment not found")
 

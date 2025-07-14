@@ -2,9 +2,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 
-from app.core.enums import RoleEnum
+from app.core.enums import RoleEnum, PermissionsEnum
+from app.models import Role, User
 from app.schema.role_permission import RoleOut
-from app.models import Role, RolePermission, Permission, User
 
 
 async def get_role_by_name(db: AsyncSession, role: str):
@@ -20,7 +20,7 @@ async def get_role_by_name_with_permissions(db: AsyncSession, role: str) -> dict
     return role_dict
 
 
-async def check_has_permission(user: User, permission_code: str):
+async def check_has_permission(user: User, permission_code: PermissionsEnum):
     if not user.role or not user.role.role_permissions:
         return False
 

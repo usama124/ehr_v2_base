@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.responses import CustomException
-from app.routers import user, doctor, patient, appointment, medical_record
+from app.routers import user, doctor, patient, appointment, medical_record, dashboard
 
 app = FastAPI(
     title="EHR Backend",
@@ -38,11 +38,12 @@ async def custom_exception_handler(request: Request, exc: Exception):
     message = exc.message
     return JSONResponse(
         status_code=status_code,
-        content={"error_code": error_code, "message": message},
+        content={"code": status_code, "error_code": error_code, "message": message},
     )
 
 
 app.include_router(user.router, prefix="/user", tags=["User"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["Dashboard"])
 app.include_router(doctor.router, prefix="/doctor", tags=["Doctor"])
 app.include_router(patient.router, prefix="/patient", tags=["Patient"])
 app.include_router(appointment.router, prefix="/appointment", tags=["Appointment"])

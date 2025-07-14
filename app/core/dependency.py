@@ -40,7 +40,7 @@ def require_permission(permission_code: PermissionsEnum) -> Callable:
     async def permission_checker(
             current_user=Depends(get_current_user)
     ):
-        has_permission = await role_perm_crud.check_has_permission(current_user, permission_code.value)
+        has_permission = await role_perm_crud.check_has_permission(current_user, permission_code)
         if not has_permission:
             raise ForbiddenException(message=f"Requires {permission_code.value} permission")
         return current_user

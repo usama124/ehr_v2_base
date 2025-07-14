@@ -64,7 +64,7 @@ async def update_medical_record(
         db: AsyncSession = Depends(get_db),
         current_user=Depends(require_permission(PermissionsEnum.CAN_EDIT_RECORD)),
 ):
-    db_record = await record_crud.check_medical_record_exists(db=db, _id=record_id)
+    db_record = await record_crud.get_medical_record_by_id(db=db, _id=record_id)
     if not db_record:
         raise NotFoundException(message="Medical record not found")
 

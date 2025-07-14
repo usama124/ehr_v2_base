@@ -1,20 +1,20 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class AppointmentCreate(BaseModel):
     patient_id: int
     doctor_id: int
-    appointment_time: datetime
+    appointment_time: datetime = Field(..., example="2025-07-14 10:45:05")
     reason: Optional[str]
 
 
 class AppointmentUpdate(BaseModel):
     patient_id: Optional[int] = None
     doctor_id: Optional[int] = None
-    appointment_time: Optional[datetime] = None
+    appointment_time: Optional[datetime] = Field(default=None, example="2025-07-14 10:45:05")
     reason: Optional[str] = None
 
 

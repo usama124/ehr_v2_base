@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, model_validator
+from pydantic import BaseModel, EmailStr, model_validator, Field
 
 from app.core.enums import RoleEnum, Gender
 
@@ -21,7 +21,7 @@ class PatientCreate(BaseModel):
     first_name: str
     last_name: str
     contact_number: str
-    date_of_birth: date
+    date_of_birth: date = Field(..., example="2025-07-14")
     gender: Gender
 
 
@@ -36,7 +36,7 @@ class PatientUpdate(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     contact_number: Optional[str] = None
-    date_of_birth: Optional[date] = None
+    date_of_birth: Optional[date] = Field(default=None, example="2025-07-14")
     gender: Optional[Gender] = None
 
 
