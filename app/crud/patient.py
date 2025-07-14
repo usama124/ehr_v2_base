@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 
-from app.models import Patient, User
+from app.models import Patient, User, Appointment
 from app.schema import PatientProfileOut, UserOut, PatientCreate, AppointmentOut, MedicalRecordOut
 
 
@@ -14,8 +14,26 @@ async def get_patients_count(db: AsyncSession):
     return count
 
 
-async def list_patients(db: AsyncSession):
-    result = await db.execute(select(Patient).where(Patient.is_deleted == False))
+async def list_patients(db: AsyncSession, patient_id: int = None):
+    query = select(Patient).where(Patient.is_deleted == False)
+    if patient_id:
+        query = query.where(Patient.id == patient_id)
+    result = await db.execute(query)
+    return result.scalars().all()
+
+
+async def list_patients_assigned_to_doctor(db: AsyncSession, doctor_id: int):
+    stmt = (
+        select(Patient)
+        .join(Appointment, Appointment.patient_id == Patient.id)
+        .where(
+            Appointment.doctor_id == doctor_id,
+            Appointment.is_deleted == False,
+            Patient.is_deleted == False,
+        )
+        .distinct()
+    )
+    result = await db.execute(stmt)
     return result.scalars().all()
 
 

@@ -17,7 +17,12 @@ async def get_patients(
         db: AsyncSession = Depends(get_db),
         current_user=Depends(require_permission(PermissionsEnum.CAN_VIEW_PATIENT)),
 ):
-    patients = await patient_crud.list_patients(db=db)
+    if current_user.role.name == RoleEnum.PATIENT:
+        patients = await patient_crud.list_patients(db=db, patient_id=current_user.patient_profile.id)
+    elif current_user.role.name == RoleEnum.DOCTOR:
+        patients = await patient_crud.list_patients_assigned_to_doctor(db=db, doctor_id=current_user.doctor_profile.id)
+    else:
+        patients = await patient_crud.list_patients(db=db)
     response = await patient_crud.construct_patient_serialized_response(patients)
     return ApiCustomResponse.get_response(status_code=200, message="success", data=response)
 
