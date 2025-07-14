@@ -13,6 +13,11 @@ async def list_doctors(db: AsyncSession):
     return result.scalars().all()
 
 
+async def check_doctor_exists(db: AsyncSession, _id: int):
+    result = await db.execute(select(Doctor).where(Doctor.id == _id, Doctor.is_deleted == False))
+    return result.scalars().first()
+
+
 async def get_doctor_by_id(db: AsyncSession, _id: int):
     result = await db.execute(select(Doctor).options(
         selectinload(Doctor.user),
