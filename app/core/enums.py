@@ -1,6 +1,12 @@
 from enum import Enum as PyEnum
 
 
+class Gender(PyEnum):
+    MALE = "MALE"
+    FEMALE = "FEMALE"
+    OTHER = "OTHER"
+
+
 class RoleEnum(PyEnum):
     ADMIN = "ADMIN"
     DOCTOR = "DOCTOR"
@@ -33,6 +39,7 @@ class PermissionsEnum(PyEnum):
     CAN_EDIT_RECORD = "CAN_EDIT_RECORD"
     CAN_VIEW_RECORD = "CAN_VIEW_RECORD"
     CAN_DELETE_RECORD = "CAN_DELETE_RECORD"
+
 
 AdminPermissions = [
     PermissionsEnum.CAN_ADD_USER,

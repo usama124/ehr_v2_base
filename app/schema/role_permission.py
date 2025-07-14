@@ -15,18 +15,26 @@ class Permission(BaseModel):
     description: str
 
 
+class PermissionBasicOut(BaseModel):
+    code: PermissionsEnum
+
+
 class RolePermissionCreate(BaseModel):
     role: RoleEnum
     permission: PermissionsEnum
 
 
 class RolePermissionOut(BaseModel):
-    id: int
-    role: Role
-    permission: Permission
+    permission: PermissionBasicOut
+
+    class Config:
+        from_attributes = True
 
 
 class RoleOut(BaseModel):
     id: int
-    name: RoleEnum
-    role_permissions: RolePermissionOut
+    name: str
+    # role_permissions: list[RolePermissionOut]
+
+    class Config:
+        from_attributes = True

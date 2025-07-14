@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
@@ -10,7 +10,7 @@ class Patient(Base):
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False, unique=True)
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
-    date_of_birth = Column(DateTime, nullable=False)
+    date_of_birth = Column(Date, nullable=False)
     contact_number = Column(String)
     gender = Column(String, nullable=False)
     is_deleted = Column(Boolean, default=False)
