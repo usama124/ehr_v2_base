@@ -2,3 +2,4 @@ from app.schema.user import UserOut, UserLogin, UserCreate, DoctorProfileOut, Pa
     PatientCreate, DoctorUpdate, PatientUpdate
 from app.schema.role_permission import RoleOut, PermissionBasicOut, RolePermissionCreate, RolePermissionOut, Permission
 from app.schema.appointment import AppointmentOut, AppointmentCreate, AppointmentUpdate
+from app.schema.medical_record import MedicalRecordOut, MedicalRecordUpdate, MedicalRecordCreate

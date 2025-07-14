@@ -28,8 +28,11 @@ async def get_doctor_by_id(
         db: AsyncSession = Depends(get_db),
         current_user=Depends(require_permission(PermissionsEnum.CAN_VIEW_DOCTOR)),
 ):
-    doctors = await doctor_crud.get_doctor_by_id(db=db, _id=doctor_id)
-    response = await doctor_crud.construct_doctor_serialized_response(doctors)
+    doctor = await doctor_crud.get_doctor_by_id(db=db, _id=doctor_id)
+    if not doctor:
+        raise NotFoundException(message="Doctor not found")
+
+    response = await doctor_crud.construct_doctor_serialized_response(doctor)
     return ApiCustomResponse.get_response(status_code=200, message="success", data=response)
 
 
